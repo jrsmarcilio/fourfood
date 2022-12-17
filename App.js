@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginView from './src/screens/LoginView';
 import ClienteView from './src/screens/CadastroClienteView';
 import EmpresaView from './src/screens/CadastroEmpresaView';
+import FlashMessage from 'react-native-flash-message';
 
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name='EmpresaView' component={EmpresaView} />
 
       </Stack.Navigator>
+      <FlashMessage position={'bottom'}/>
     </NavigationContainer>
   );
 }
