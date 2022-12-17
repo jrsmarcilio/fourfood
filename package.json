@@ -21,7 +21,7 @@
     "react-native-elements": "^3.4.2",
     "react-native-flash-message": "^0.3.1",
     "react-native-mask-text": "^0.13.1",
-    "react-native-web": "^0.18.10"
+    "react-native-web": "^0.18.10",
     "react-native-mask-text": "^0.13.1"
   },
   "devDependencies": {
