@@ -56,12 +56,6 @@ export default function ClienteView({ navigation, route }) {
           <Button
             title={'Continuar'}
             buttonStyle={styles.button}
-            onPress={() => navigation.navigate('EmpresaView', {
-              nome: nome,
-              cpf: cpf,
-              celular: celular,
-              telefone: telefone
-            })}
           />
         </View>
 
