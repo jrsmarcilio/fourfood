@@ -1,9 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Image, Input, Button } from 'react-native-elements';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Button } from 'react-native-elements';
 import { useFonts } from 'expo-font';
+import { useState } from 'react';
+import { MaskedTextInput } from 'react-native-mask-text';
 
 
-export default function ClienteView() {
+export default function ClienteView({ navigation, route }) {
+  const [nome, setNome] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [celular, setCelular] = useState('');
+  const [telefone, setTelefone] = useState('');
   const [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
   });
@@ -11,38 +17,58 @@ export default function ClienteView() {
 
   return (
     <View style={{ flex: 1 }}>
-      <Image
-        source={require("../../assets/oxefood.png")}
-        style={styles.image}
-      />
-      <Text style={styles.text}>CADASTRE-SE HOJE!</Text>
-      <View style={{ flex: 1 }}>
-        <Input
-          label='Nome'
-          labelStyle={styles.label}
+      <ScrollView>
+        <Image
+          source={require("../../assets/oxefood.png")}
+          style={styles.image}
         />
-        <Input
-          label='CPF'
-          labelStyle={styles.label}
-        />
-        <Input
-          label='Celular'
-          labelStyle={styles.label}
-        />
-        <Input
-          label='Telefone'
-          labelStyle={styles.label}
-        />
+        <Text style={styles.text}>CADASTRE-SE HOJE!</Text>
+        <View style={{ flex: 1 }}>
 
-        <Button
-          title={'Continuar'}
-          buttonStyle={styles.button}
-        />
-      </View>
+          <Text style={styles.label}>Nome</Text>
+          <MaskedTextInput
+            onChangeText={nome => setNome(nome)}
+            style={styles.input}
+          />
+          <Text style={styles.label}>CPF</Text>
+          <MaskedTextInput
+            mask='999.999.999-99'
+            onChangeText={cpf => setCpf(cpf)}
+            keyboardType='numeric'
+            style={styles.input}
+          />
+          <Text style={styles.label}>Celular</Text>
+          <MaskedTextInput
+            mask='(99)99999-9999'
+            placeholder='(99)99999-9999'
+            onChangeText={celular => setCelular(celular)}
+            keyboardType='numeric'
+            style={styles.input}
+          />
+          <Text style={styles.label}>Telefone</Text>
+          <MaskedTextInput
+            mask='(99)9999-9999'
+            onChangeText={telefone => setTelefone(telefone)}
+            keyboardType='numeric'
+            style={styles.input}
+          />
 
-      <View style={{ flex: 1 }}>
+          <Button
+            title={'Continuar'}
+            buttonStyle={styles.button}
+            onPress={() => navigation.navigate('EmpresaView', {
+              nome: nome,
+              cpf: cpf,
+              celular: celular,
+              telefone: telefone
+            })}
+          />
+        </View>
 
-      </View>
+        <View style={{ flex: 1 }}>
+
+        </View>
+      </ScrollView>
     </View>
 
   );
@@ -74,5 +100,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     color: '#000',
+    marginLeft: 8,
+    marginRight: 8,
+  },
+  input: {
+    borderBottomWidth: 1,
+    marginLeft: 8,
+    marginRight: 8,
+    marginBottom: 20,
   }
 });
