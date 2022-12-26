@@ -60,6 +60,7 @@ export default function EmpresaView({ navigation, route }) {
                     <Button
                         title={'Continuar'}
                         buttonStyle={styles.button}
+                        onPress={() => navigation.navigate('DashboardView')}
                     />
                 </View>
 
