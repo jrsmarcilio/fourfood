@@ -16,8 +16,12 @@
     "expo-status-bar": "~1.4.2",
     "react": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-dropdown-picker": "^5.4.3",
     "react-native-elements": "^3.4.2",
-    "react-native-mask-text": "^0.13.1"
+    "react-native-flash-message": "^0.3.1",
+    "react-native-mask-text": "^0.13.1",
+    "react-native-select-dropdown": "^3.1.0",
+    "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
