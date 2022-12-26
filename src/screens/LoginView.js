@@ -40,7 +40,7 @@ export default function LoginView({ navigation, route }) {
             <Button
                 title="Logar"
                 buttonStyle={styles.button}
-                onPress={() => navigation.navigate('ClienteView')}
+                onPress={() => navigation.navigate('DashboardView')}
             />
 
             <Button
