@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Image, Button } from 'react-native-elements';
+import { Image, Button, Input } from 'react-native-elements';
 import { useFonts } from 'expo-font';
+import React, { useState } from 'react';
 
 
-export default function LoginView({navigation}) {
+export default function LoginView({ navigation, route }) {
+    const [login, setLogin] = useState('');
+    const [password, setPassword] = useState('');
     const [fontsLoaded] = useFonts({
         'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
     });
@@ -11,23 +14,40 @@ export default function LoginView({navigation}) {
 
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ flex: 1 }}>
 
-            </View>
             <Image
                 source={require("../../assets/logo.png")}
                 style={styles.image}
+
+
             />
+
+            <Input
+                label='Login'
+                value={login}
+
+                onChangeText={login => setLogin(login)}
+            />
+
+            <Input
+                label='Senha'
+                value={password}
+                onChangeText={password => setPassword(password)}
+                secureTextEntry={true}
+            />
+
+
             <Button
-                title="Cadastre-se"
+                title="Logar"
                 buttonStyle={styles.button}
-                onPress={()=>navigation.navigate('ClienteView')}
+                onPress={() => navigation.navigate('ClienteView')}
             />
 
             <Button
-                title="Outras opções"
+                title="Cadastrar-se"
                 buttonStyle={[styles.button, { backgroundColor: '#FFF', borderWidth: 1, borderColor: '#000' }]}
                 titleStyle={{ color: '#000' }}
+                onPress={() => navigation.navigate('ClienteView')}
             />
 
             <View style={{ flex: 1 }}>
@@ -42,6 +62,8 @@ export default function LoginView({navigation}) {
 const styles = StyleSheet.create({
     image: {
         minHeight: 140,
+
+        paddingBottom: 200
     },
 
     button: {
