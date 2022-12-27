@@ -21,7 +21,7 @@ export default function EmpresaView({ navigation, route }) {
         <View style={{ flex: 1 }}>
             <ScrollView>
                 <Image
-                    source={require("../../assets/oxefood.png")}
+                    source={require("../../assets/fourfood.png")}
                     style={styles.image}
                 />
                 <Text style={styles.text}>CADASTRE UMA EMPRESA</Text>
