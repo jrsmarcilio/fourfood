@@ -1,7 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Image, Button, Input } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import React, { useState } from 'react';
+import { showMessage } from 'react-native-flash-message';
+import axios from 'axios';
+import { save, getValueFor } from '../token/token';
 
 
 export default function LoginView({ navigation, route }) {
@@ -18,14 +21,11 @@ export default function LoginView({ navigation, route }) {
             <Image
                 source={require("../../assets/logo.png")}
                 style={styles.image}
-
-
             />
 
             <Input
                 label='Login'
                 value={login}
-
                 onChangeText={login => setLogin(login)}
             />
 
@@ -40,7 +40,29 @@ export default function LoginView({ navigation, route }) {
             <Button
                 title="Logar"
                 buttonStyle={styles.button}
-                onPress={() => navigation.navigate('DashboardView')}
+                onPress={() => {
+                    if (!login.trim() || !password.trim()) {
+                        showMessage({
+                            message: 'Campo login e senha são obrigatórios',
+                            type: 'danger'
+                        });
+                        return;
+                    }
+                    axios.post('https://fourfood-api.herokuapp.com/api/login/signin', {
+                        password: password,
+                        username: login
+                    })
+                    .then((response) => {
+                        save('token', response.data.token);
+                        navigation.navigate('DashBoardView');
+                    })
+                    .catch((error) => {
+                        showMessage({
+                            message: 'Login ou senha incorretos',
+                            type: 'danger'
+                        });
+                    })
+                }}
             />
 
             <Button
