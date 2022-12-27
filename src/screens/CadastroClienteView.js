@@ -19,7 +19,7 @@ export default function ClienteView({ navigation, route }) {
     <View style={{ flex: 1 }}>
       <ScrollView>
         <Image
-          source={require("../../assets/oxefood.png")}
+          source={require("../../assets/fourfood.png")}
           style={styles.image}
         />
         <Text style={styles.text}>CADASTRE-SE HOJE!</Text>
