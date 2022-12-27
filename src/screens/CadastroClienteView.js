@@ -1,6 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Image, Button } from 'react-native-elements';
-import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { MaskedTextInput } from 'react-native-mask-text';
 
@@ -10,10 +9,6 @@ export default function ClienteView({ navigation, route }) {
   const [cpf, setCpf] = useState('');
   const [celular, setCelular] = useState('');
   const [telefone, setTelefone] = useState('');
-  const [fontsLoaded] = useFonts({
-    'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
-  });
-  if (!fontsLoaded) return null;
 
   return (
     <View style={{ flex: 1 }}>
@@ -54,7 +49,7 @@ export default function ClienteView({ navigation, route }) {
           />
 
           <Button
-            title={'Continuar'}
+            title={'Cadastrar'}
             buttonStyle={styles.button}
             onPress={() => navigation.navigate('EmpresaView', {
               nome: nome,
@@ -95,8 +90,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   label: {
-    fontWeight: '400',
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins_400Regular',
     fontSize: 16,
     lineHeight: 20,
     color: '#000',
