@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
 import { Image, Button, Input } from 'react-native-elements';
-import { useFonts } from 'expo-font';
 import React, { useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import axios from 'axios';
@@ -10,10 +9,6 @@ import { save, getValueFor } from '../token/token';
 export default function LoginView({ navigation, route }) {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    const [fontsLoaded] = useFonts({
-        'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
-    });
-    if (!fontsLoaded) return null;
 
     return (
         <View style={{ flex: 1 }}>
@@ -84,7 +79,6 @@ export default function LoginView({ navigation, route }) {
 const styles = StyleSheet.create({
     image: {
         minHeight: 140,
-
         paddingBottom: 200
     },
 
@@ -92,7 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#B84D4D',
         minWidth: 200,
         alignSelf: 'center',
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins_400Regular',
         marginTop: 30
 
     },

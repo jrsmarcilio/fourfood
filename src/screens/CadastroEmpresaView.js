@@ -1,21 +1,15 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Image, Input, Button } from 'react-native-elements';
-import { useFonts } from 'expo-font';
 import { useState } from 'react';
 import { MaskedTextInput } from 'react-native-mask-text';
 
 
 export default function EmpresaView({ navigation, route }) {
-    const { nome, cpf, celular, telefone } = route.params;
     const [nomeEmpresa, setNomeEmpresa] = useState('');
     const [cnpj, setCnpj] = useState('');
     const [email, setEmail] = useState('');
     const [telefoneEmpresa, setTelefoneEmpresa] = useState('');
     const [site, setSite] = useState('');
-    const [fontsLoaded] = useFonts({
-        'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
-    });
-    if (!fontsLoaded) return null;
 
     return (
         <View style={{ flex: 1 }}>
@@ -94,8 +88,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     label: {
-        fontWeight: '400',
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins_400Regular',
         fontSize: 16,
         lineHeight: 20,
         color: '#000',
