@@ -1,14 +1,33 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Image, Button } from 'react-native-elements';
-import { useState } from 'react';
-import { MaskedTextInput } from 'react-native-mask-text';
+import { Button, Image } from 'react-native-elements';
+import { useForm } from 'react-hook-form';
+import { showMessage } from 'react-native-flash-message';
 
+import { TextField } from '../components/TextField';
+import { TextFieldMask } from '../components/TextFieldMask';
+import { api } from '../services/api';
 
 export default function ClienteView({ navigation, route }) {
-  const [nome, setNome] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [celular, setCelular] = useState('');
-  const [telefone, setTelefone] = useState('');
+  const { register, getValues, setValue, handleSubmit } = useForm();
+
+  const onSubmit = async (data) => {
+    if (!data.nome || !data.cpf || !data.email || !data.password || !data.fone) {
+      showMessage({ message: 'Preencha os campos corretamente.', type: 'danger' });
+      return;
+    }
+
+    if (!data.foneAlternativo) setValue('foneAlternativo', getValues('fone'));
+    setValue('chaveEmpresa', '4food');
+
+    await api.post('/cliente', data)
+      .then((response) => {
+        showMessage({ message: 'Cadastro realizado com sucesso', type: 'success' });
+        navigation.navigate('LoginView', { email: response.data.email });
+      })
+      .catch((error) => {
+        showMessage({ message: 'Existem campos preenchidos incorretos.', type: 'danger' });
+      });
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -18,50 +37,18 @@ export default function ClienteView({ navigation, route }) {
           style={styles.image}
         />
         <Text style={styles.text}>CADASTRE-SE HOJE!</Text>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 20 }}>
 
-          <Text style={styles.label}>Nome</Text>
-          <MaskedTextInput
-            onChangeText={nome => setNome(nome)}
-            style={styles.input}
-          />
-          <Text style={styles.label}>CPF</Text>
-          <MaskedTextInput
-            mask='999.999.999-99'
-            onChangeText={cpf => setCpf(cpf)}
-            keyboardType='numeric'
-            style={styles.input}
-          />
-          <Text style={styles.label}>Celular</Text>
-          <MaskedTextInput
-            mask='(99)99999-9999'
-            placeholder='(99)99999-9999'
-            onChangeText={celular => setCelular(celular)}
-            keyboardType='numeric'
-            style={styles.input}
-          />
-          <Text style={styles.label}>Telefone</Text>
-          <MaskedTextInput
-            mask='(99)9999-9999'
-            onChangeText={telefone => setTelefone(telefone)}
-            keyboardType='numeric'
-            style={styles.input}
-          />
+          <TextField label='Nome' onChangeText={text => setValue('nome', text)} />
+          <TextFieldMask label='CPF' mask='999.999.999-99' onChangeText={text => setValue('cpf', text)} />
+          <TextField label="E-mail" onChangeText={text => setValue('email', text)} />
+          <TextField label="Senha" onChangeText={text => setValue('password', text)} />
+          <TextFieldMask label='Celular' mask='(99)99999-9999' placeholder='99 9 9999 9999' onChangeText={text => setValue('fone', text)} />
+          <TextFieldMask label='Telefone' mask='(99)9999-9999' placeholder='99 9999 9999' onChangeText={text => setValue('foneAlternativo', text)} />
 
-          <Button
-            title={'Cadastrar'}
-            buttonStyle={styles.button}
-            onPress={() => navigation.navigate('EmpresaView', {
-              nome: nome,
-              cpf: cpf,
-              celular: celular,
-              telefone: telefone
-            })}
-          />
+          <Button onPress={handleSubmit(onSubmit)} title={'Cadastrar'} buttonStyle={styles.button} />
         </View>
-
         <View style={{ flex: 1 }}>
-
         </View>
       </ScrollView>
     </View>
@@ -78,8 +65,9 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#B84D4D',
-    minWidth: 200,
+    minWidth: '100%',
     alignSelf: 'center',
+    marginTop: 20,
   },
   image: {
     minHeight: 140,
