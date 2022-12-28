@@ -9,6 +9,7 @@ import FlashMessage from 'react-native-flash-message';
 import DashBoardView from './src/screens/DashboardView';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
+import EscolherPerfilView from './src/screens/EscolherPerfilView';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='EscolherPerfilView' component={EscolherPerfilView} />
         <Stack.Screen name='LoginView' component={LoginView} />
         <Stack.Screen name='ClienteView' component={ClienteView} />
         <Stack.Screen name='EmpresaView' component={EmpresaView} />
