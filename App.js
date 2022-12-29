@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Sarabun_700Bold, useFonts } from '@expo-google-fonts/sarabun';
 import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { Roboto_500Medium } from '@expo-google-fonts/roboto';
 import LoginView from './src/screens/LoginView';
 import ClienteView from './src/screens/CadastroClienteView';
 import EmpresaView from './src/screens/CadastroEmpresaView';
@@ -10,6 +11,7 @@ import DashBoardView from './src/screens/DashboardView';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import EscolherPerfilView from './src/screens/EscolherPerfilView';
+import HomeEmpresaView from './src/screens/HomeEmpresaView';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +19,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Sarabun_700Bold,
+    Roboto_500Medium,
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -37,6 +40,7 @@ export default function App() {
         <Stack.Screen name='ClienteView' component={ClienteView} />
         <Stack.Screen name='EmpresaView' component={EmpresaView} />
         <Stack.Screen name='DashBoardView' component={DashBoardView} />
+        <Stack.Screen name='HomeEmpresaView' component={HomeEmpresaView} />
       </Stack.Navigator>
       <FlashMessage position={'bottom'} />
     </NavigationContainer>

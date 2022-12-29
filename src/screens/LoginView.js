@@ -5,8 +5,8 @@ import { showMessage } from 'react-native-flash-message';
 import axios from 'axios';
 import { save, getValueFor } from '../token/token';
 
-
 export default function LoginView({ navigation, route }) {
+    const { accountType } = route.params;
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
@@ -47,16 +47,20 @@ export default function LoginView({ navigation, route }) {
                         password: password,
                         username: login
                     })
-                    .then((response) => {
-                        save('token', response.data.token);
-                        navigation.navigate('DashBoardView');
-                    })
-                    .catch((error) => {
-                        showMessage({
-                            message: 'Login ou senha incorretos',
-                            type: 'danger'
-                        });
-                    })
+                        .then((response) => {
+                            save('token', response.data.token);
+                            if (accountType === 'cliente') {
+                                navigation.navigate('DashBoardView');
+                            } else if (accountType === 'empresa') {
+                                navigation.navigate('HomeEmpresaView');
+                            }
+                        })
+                        .catch((error) => {
+                            showMessage({
+                                message: 'Login ou senha incorretos',
+                                type: 'danger'
+                            });
+                        })
                 }}
             />
 
@@ -89,5 +93,5 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_400Regular',
         marginTop: 30
 
-    },
+    }
 })
