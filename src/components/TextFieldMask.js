@@ -2,11 +2,20 @@ import { Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
 
-const TextFieldMask = ({ mask, label, keyboardType, ...inputProps }) => (
+const TextFieldMask = ({ mask, label, required, keyboardType, ...inputProps }) => (
   <Fragment>
-    <Text style={styles.label}>{label}</Text>
+    {
+      required ? (
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>{label}</Text>
+          <Text style={styles.errorMessage}>*</Text>
+        </View>
+      ) :
+        <Text style={styles.label}>{label}</Text>
+    }
     <MaskedTextInput
       mask={mask}
+      placeholder={mask}
       keyboardType={keyboardType ? keyboardType : 'numeric'}
       style={styles.input}
       {...inputProps}
@@ -38,6 +47,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(200,0,50,1)',
     textAlign: 'center',
-    marginTop: 5
+    marginTop: 5,
+    marginLeft: 5
+  },
+  labelContainer: {
+    display: 'flex',
+    flexDirection: 'row',
   }
 });
