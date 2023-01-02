@@ -4,8 +4,8 @@ import { Sarabun_700Bold, useFonts } from '@expo-google-fonts/sarabun';
 import { Poppins_400Regular } from '@expo-google-fonts/poppins';
 import { Roboto_500Medium } from '@expo-google-fonts/roboto';
 import LoginView from './src/screens/LoginView';
-import ClienteView from './src/screens/CadastroClienteView';
-import EmpresaView from './src/screens/CadastroEmpresaView';
+import CadastroClienteView from './src/screens/CadastroClienteView';
+import CadastroEmpresaView from './src/screens/CadastroEmpresaView';
 import FlashMessage from 'react-native-flash-message';
 import DashBoardView from './src/screens/DashboardView';
 import * as SplashScreen from 'expo-splash-screen';
@@ -37,8 +37,8 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='EscolherPerfilView' component={EscolherPerfilView} />
         <Stack.Screen name='LoginView' component={LoginView} />
-        <Stack.Screen name='ClienteView' component={ClienteView} />
-        <Stack.Screen name='EmpresaView' component={EmpresaView} />
+        <Stack.Screen name='CadastroClienteView' component={CadastroClienteView} />
+        <Stack.Screen name='CadastroEmpresaView' component={CadastroEmpresaView} />
         <Stack.Screen name='DashBoardView' component={DashBoardView} />
         <Stack.Screen name='HomeEmpresaView' component={HomeEmpresaView} />
       </Stack.Navigator>

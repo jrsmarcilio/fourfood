@@ -1,9 +1,18 @@
 import { Fragment } from 'react';
 import { TextInput, StyleSheet, Text, View } from 'react-native';
 
-const TextField = ({ label, ...inputProps }) => (
+const TextField = ({ label, required, ...inputProps }) => (
   <Fragment>
-    <Text style={styles.label}>{label}</Text>
+    {
+      required ? (
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>{label}</Text>
+          <Text style={styles.errorMessage}>*</Text>
+        </View>
+      ) :
+        <Text style={styles.label}>{label}</Text>
+    }
+
     <TextInput
       style={styles.input}
       {...inputProps}
@@ -35,6 +44,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(200,0,50,1)',
     textAlign: 'center',
-    marginTop: 5
+    marginTop: 5,
+    marginLeft: 5
+  },
+  labelContainer: {
+    display: 'flex',
+    flexDirection: 'row',
   }
 });

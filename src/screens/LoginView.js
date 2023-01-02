@@ -1,97 +1,91 @@
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
-import { Image, Button, Input } from 'react-native-elements';
-import React, { useState } from 'react';
+import { Button, Image } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
-import axios from 'axios';
-import { save, getValueFor } from '../token/token';
+import { api } from '../services/api';
+
+import { TextField } from '../components/TextField';
+import { save } from '../token/token';
+import { TextFieldMask } from '../components/TextFieldMask';
 
 export default function LoginView({ navigation, route }) {
-    const { accountType } = route.params;
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
+  const { setValue, handleSubmit } = useForm();
+  const { accountType } = route.params;
 
-    return (
-        <View style={{ flex: 1 }}>
+  const onSubmit = async (data) => {
+    if (!data || data.username === '' || data.password === '') {
+      showMessage({ message: 'Campo login e senha são obrigatórios', type: 'danger' });
+      return;
+    }
 
-            <Image
-                source={require("../../assets/logo.png")}
-                style={styles.image}
-            />
+    api.post('/login/signin', data)
+      .then((response) => {
+        save('token', response.data.token);
+        changeRedirect('dashboard');
+      })
+      .catch((error) => {
+        showMessage({
+          message: 'Login ou senha incorretos',
+          type: 'danger'
+        });
+      })
+  }
 
-            <Input
-                label='Login'
-                value={login}
-                onChangeText={login => setLogin(login)}
-            />
+  const changeRedirect = (view) => {
+    if (accountType === 'cliente') {
+      navigation.navigate(view == 'register' ? 'CadastroClienteView' : 'DashBoardView');
+      return;
+    }
+    // Se passou AccountType === Empresa
+    navigation.navigate(view == 'register' ? 'CadastroEmpresaView' : 'HomeEmpresaView');
+    // Condicionais ternários são legais, mas não abusem
+    // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+  }
 
-            <Input
-                label='Senha'
-                value={password}
-                onChangeText={password => setPassword(password)}
-                secureTextEntry={true}
-            />
+  return (
+    <View style={{ flex: 1, paddingHorizontal: 20 }}>
 
+      <Image
+        source={require("../../assets/logo.png")}
+        style={styles.image}
+      />
 
-            <Button
-                title="Logar"
-                buttonStyle={styles.button}
-                onPress={() => {
-                    if (!login.trim() || !password.trim()) {
-                        showMessage({
-                            message: 'Campo login e senha são obrigatórios',
-                            type: 'danger'
-                        });
-                        return;
-                    }
-                    axios.post('https://fourfood-api.herokuapp.com/api/login/signin', {
-                        password: password,
-                        username: login
-                    })
-                        .then((response) => {
-                            save('token', response.data.token);
-                            if (accountType === 'cliente') {
-                                navigation.navigate('DashBoardView');
-                            } else if (accountType === 'empresa') {
-                                navigation.navigate('HomeEmpresaView');
-                            }
-                        })
-                        .catch((error) => {
-                            showMessage({
-                                message: 'Login ou senha incorretos',
-                                type: 'danger'
-                            });
-                        })
-                }}
-            />
+      <TextField label='E-mail' onChangeText={text => setValue('username', text)} />
+      <TextField label='Senha' onChangeText={text => setValue('password', text)} secureTextEntry={true} />
 
-            <Button
-                title="Cadastrar-se"
-                buttonStyle={[styles.button, { backgroundColor: '#FFF', borderWidth: 1, borderColor: '#000' }]}
-                titleStyle={{ color: '#000' }}
-                onPress={() => navigation.navigate('ClienteView')}
-            />
+      <Button
+        title="Entrar"
+        buttonStyle={styles.button}
+        onPress={handleSubmit(onSubmit)}
+      />
 
-            <View style={{ flex: 1 }}>
+      <Button
+        title="Cadastrar-se"
+        buttonStyle={[styles.button, { backgroundColor: '#FFF', borderWidth: 1, borderColor: '#000' }]}
+        titleStyle={{ color: '#000' }}
+        onPress={() => changeRedirect('register')}
+      />
 
-            </View>
-        </View>
-    )
+      <View style={{ flex: 1 }}>
 
-
+      </View>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-    image: {
-        minHeight: 140,
-        paddingBottom: 200
-    },
+  image: {
+    minHeight: 140,
+    paddingBottom: 200
+  },
 
-    button: {
-        backgroundColor: '#B84D4D',
-        minWidth: 200,
-        alignSelf: 'center',
-        fontFamily: 'Poppins_400Regular',
-        marginTop: 30
+  button: {
+    backgroundColor: '#B84D4D',
+    minWidth: 200,
+    alignSelf: 'center',
+    fontFamily: 'Poppins_400Regular',
+    marginTop: 30
 
-    }
+  }
 })
