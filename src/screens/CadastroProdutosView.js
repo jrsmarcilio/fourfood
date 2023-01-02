@@ -34,7 +34,6 @@ export default function ProdutoView() {
                 containerStyle={{height: 40}}
                 onChangeItem={item => console.log(item.label, item.value)}
            />   
-
           <Input
             label='Título'
             labelStyle={styles.label}
