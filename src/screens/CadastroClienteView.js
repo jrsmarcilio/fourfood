@@ -42,11 +42,11 @@ export default function CadastroClienteView({ navigation, route }) {
           <TextField label='Nome' required onChangeText={text => setValue('nome', text)} />
           <TextFieldMask label='CPF' required mask='999.999.999-99' onChangeText={text => setValue('cpf', text)} />
           <TextField label="E-mail" required onChangeText={text => setValue('email', text)} />
-          <TextField label="Senha" required onChangeText={text => setValue('password', text)} />
+          <TextField label="Senha" required onChangeText={text => setValue('password', text)} secureTextEntry={true} />
           <TextFieldMask label='Celular' required mask='(99)99999-9999' placeholder='99 9 9999 9999' onChangeText={text => setValue('fone', text)} />
           <TextFieldMask label='Telefone' mask='(99)9999-9999' placeholder='99 9999 9999' onChangeText={text => setValue('foneAlternativo', text)} />
 
-          <Button onPress={handleSubmit(onSubmit)} title={'Cadastrar'} buttonStyle={styles.button} />
+          <Button onPress={handleSubmit(onSubmit)} title='Cadastrar' buttonStyle={styles.button} />
         </View>
         <View style={{ flex: 1 }}>
         </View>

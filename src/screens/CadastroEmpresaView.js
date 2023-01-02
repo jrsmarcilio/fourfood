@@ -8,10 +8,18 @@ import { TextFieldMask } from '../components/TextFieldMask';
 import { api } from '../services/api';
 
 export default function CadastroEmpresaView({ navigation, route }) {
-  const { register, getValues, setValue, handleSubmit } = useForm();
+  const { setValue, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
-    if (!data.inscricaoEstadual || !data.cnpj || !data.nomeFantasia || !data.nomeEmpresarial || !data.email || !data.password || !data.fone) {
+    if (
+      !data.inscricaoEstadual ||
+      !data.cnpj ||
+      !data.nomeFantasia ||
+      !data.nomeEmpresarial ||
+      !data.email ||
+      !data.password ||
+      !data.fone
+    ) {
       showMessage({ message: 'Preencha os campos corretamente.', type: 'danger' });
       return;
     }
@@ -19,7 +27,7 @@ export default function CadastroEmpresaView({ navigation, route }) {
     setValue('chave', '4food');
     setValue('perfil', 'EMPRESA_ADMIN');
 
-    api.post('/empresa', data)
+    await api.post('/empresa', data)
       .then((response) => {
         showMessage({ message: 'Cadastro realizado com sucesso', type: 'success' });
         navigation.navigate('LoginView', { email: response.data.email });
@@ -40,19 +48,15 @@ export default function CadastroEmpresaView({ navigation, route }) {
         <View style={{ flex: 1 }}>
           <TextField required label='Nome Fantasia' onChangeText={text => setValue('nomeFantasia', text)} />
           <TextField required label='Nome Empresarial' onChangeText={text => setValue('nomeEmpresarial', text)} />
-          <TextFieldMask required label='Inscrição Estadual' mask='999.999.999.999' onChangeText={text => setValue('inscricaoEstadual', text)} />
-          <TextFieldMask required label='CNPJ' mask='99.999.999/9999-99' onChangeText={text => setValue('cnpj', text)} />
+          <TextFieldMask required label='Inscrição Estadual' mask='999.999' onChangeText={text => setValue('inscricaoEstadual', text)} />
+          <TextFieldMask required label='CNPJ' mask='999.999-999-99' onChangeText={text => setValue('cnpj', text)} />
           <TextField required label='E-mail' placeholder="fourfood@mail.com" onChangeText={text => setValue('email', text)} />
-          <TextField required label='Senha' onChangeText={text => setValue('password', text)} />
+          <TextField required label='Senha' onChangeText={text => setValue('password', text)} secureTextEntry={true} />
           <TextFieldMask required label='Celular' mask='99 9 9999 9999' onChangeText={text => setValue('fone', text)} />
           <TextFieldMask label='Telefone' mask='99 9999 9999' onChangeText={text => setValue('foneAlternativo', text)} />
-          <TextFieldMask label="Site" onChangeText={text => setValue('site', text)} keyboardType='url' />
+          <TextField label="Site" onChangeText={text => setValue('site', text)} />
 
-          <Button
-            title='Continuar'
-            buttonStyle={styles.button}
-            onPress={handleSubmit(onSubmit)}
-          />
+          <Button onPress={handleSubmit(onSubmit)} title='Continuar' buttonStyle={styles.button} />
         </View>
       </ScrollView>
     </View>
