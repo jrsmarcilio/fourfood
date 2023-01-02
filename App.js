@@ -5,6 +5,7 @@ import ClienteView from './src/screens/CadastroClienteView';
 import EmpresaView from './src/screens/CadastroEmpresaView';
 import FlashMessage from 'react-native-flash-message';
 import DashBoardView from './src/screens/DashboardView';
+import CadastroEnderecoView from './src/screens/CadastroEnderecoView';
 
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name='LoginView' component={LoginView} />
         <Stack.Screen name='ClienteView' component={ClienteView} />
         <Stack.Screen name='EmpresaView' component={EmpresaView} />
+        <Stack.Screen name='CadastroEnderecoView' component={CadastroEnderecoView} />
         <Stack.Screen name="DashboardView" component={DashBoardView} />
       </Stack.Navigator>
       <FlashMessage position={'bottom'} />
