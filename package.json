@@ -14,12 +14,6 @@
     "@expo-google-fonts/sarabun": "^0.2.2",
     "@expo/ngrok": "^4.1.0",
     "@react-navigation/native": "^6.1.1",
-    "expo-font": "^11.0.1",
-    "react-dom": "^18.2.0",
-    "react-native-paper": "^5.1.2",
-    "react-native-safe-area-context": "^4.4.1",
-    "react-native-simple-radio-button": "^2.7.4",
-    "react-native-web": "~0.18.7",
     "@react-navigation/native-stack": "^6.9.6",
     "axios": "^1.2.1",
     "expo": "~47.0.8",
@@ -39,16 +33,5 @@
   "devDependencies": {
     "@babel/core": "^7.12.9"
   },
-  "private": true,
-  "description": "Aplicação em desenvolvimento para a disciplina de Dispositivos Móveis (4º período).",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jrsmarcilio/fourfood.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jrsmarcilio/fourfood/issues"
-  },
-  "homepage": "https://github.com/jrsmarcilio/fourfood#readme"
+  "private": true
 }
