@@ -1,72 +1,54 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Image, Button } from 'react-native-elements';
-import { useFonts } from 'expo-font';
-import { useState } from 'react';
-import { MaskedTextInput } from 'react-native-mask-text';
+import { Button, Image } from 'react-native-elements';
+import { useForm } from 'react-hook-form';
+import { showMessage } from 'react-native-flash-message';
 
+import { TextField } from '../components/TextField';
+import { TextFieldMask } from '../components/TextFieldMask';
+import { api } from '../services/api';
 
-export default function ClienteView({ navigation, route }) {
-  const [nome, setNome] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [celular, setCelular] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [fontsLoaded] = useFonts({
-    'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
-  });
-  if (!fontsLoaded) return null;
+export default function CadastroClienteView({ navigation, route }) {
+  const { register, getValues, setValue, handleSubmit } = useForm();
+
+  const onSubmit = async (data) => {
+    if (!data.nome || !data.cpf || !data.email || !data.password || !data.fone) {
+      showMessage({ message: 'Preencha os campos corretamente.', type: 'danger' });
+      return;
+    }
+
+    if (!data.foneAlternativo) setValue('foneAlternativo', getValues('fone'));
+    setValue('chaveEmpresa', '4food');
+
+    await api.post('/cliente', data)
+      .then((response) => {
+        showMessage({ message: 'Cadastro realizado com sucesso', type: 'success' });
+        navigation.navigate('LoginView', { email: response.data.email });
+      })
+      .catch((error) => {
+        showMessage({ message: 'Existem campos preenchidos incorretos.', type: 'danger' });
+      });
+  }
 
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
         <Image
-          source={require("../../assets/oxefood.png")}
+          source={require("../../assets/fourfood.png")}
           style={styles.image}
         />
         <Text style={styles.text}>CADASTRE-SE HOJE!</Text>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 20 }}>
 
-          <Text style={styles.label}>Nome</Text>
-          <MaskedTextInput
-            onChangeText={nome => setNome(nome)}
-            style={styles.input}
-          />
-          <Text style={styles.label}>CPF</Text>
-          <MaskedTextInput
-            mask='999.999.999-99'
-            onChangeText={cpf => setCpf(cpf)}
-            keyboardType='numeric'
-            style={styles.input}
-          />
-          <Text style={styles.label}>Celular</Text>
-          <MaskedTextInput
-            mask='(99)99999-9999'
-            placeholder='(99)99999-9999'
-            onChangeText={celular => setCelular(celular)}
-            keyboardType='numeric'
-            style={styles.input}
-          />
-          <Text style={styles.label}>Telefone</Text>
-          <MaskedTextInput
-            mask='(99)9999-9999'
-            onChangeText={telefone => setTelefone(telefone)}
-            keyboardType='numeric'
-            style={styles.input}
-          />
+          <TextField label='Nome' required onChangeText={text => setValue('nome', text)} />
+          <TextFieldMask label='CPF' required mask='999.999.999-99' onChangeText={text => setValue('cpf', text)} />
+          <TextField label="E-mail" required onChangeText={text => setValue('email', text)} />
+          <TextField label="Senha" required onChangeText={text => setValue('password', text)} secureTextEntry={true} />
+          <TextFieldMask label='Celular' required mask='(99)99999-9999' placeholder='99 9 9999 9999' onChangeText={text => setValue('fone', text)} />
+          <TextFieldMask label='Telefone' mask='(99)9999-9999' placeholder='99 9999 9999' onChangeText={text => setValue('foneAlternativo', text)} />
 
-          <Button
-            title={'Continuar'}
-            buttonStyle={styles.button}
-            onPress={() => navigation.navigate('EmpresaView', {
-              nome: nome,
-              cpf: cpf,
-              celular: celular,
-              telefone: telefone
-            })}
-          />
+          <Button onPress={handleSubmit(onSubmit)} title='Cadastrar' buttonStyle={styles.button} />
         </View>
-
         <View style={{ flex: 1 }}>
-
         </View>
       </ScrollView>
     </View>
@@ -83,8 +65,9 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#B84D4D',
-    minWidth: 200,
+    minWidth: '100%',
     alignSelf: 'center',
+    marginTop: 20,
   },
   image: {
     minHeight: 140,
@@ -95,8 +78,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   label: {
-    fontWeight: '400',
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins_400Regular',
     fontSize: 16,
     lineHeight: 20,
     color: '#000',
