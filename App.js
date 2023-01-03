@@ -12,6 +12,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import EscolherPerfilView from './src/screens/EscolherPerfilView';
 import HomeEmpresaView from './src/screens/HomeEmpresaView';
+import MenuView from './src/screens/MenuView';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +28,7 @@ export default function App() {
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
-  
+
   if (!fontsLoaded) {
     return null;
   }
@@ -35,8 +36,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='EscolherPerfilView' component={EscolherPerfilView} />
         <Stack.Screen name='LoginView' component={LoginView} />
+        <Stack.Screen name='MenuView' component={MenuView} />
+        <Stack.Screen name='EscolherPerfilView' component={EscolherPerfilView} />
+        {/* <Stack.Screen name='LoginView' component={LoginView} /> */}
         <Stack.Screen name='CadastroClienteView' component={CadastroClienteView} />
         <Stack.Screen name='CadastroEmpresaView' component={CadastroEmpresaView} />
         <Stack.Screen name='DashBoardView' component={DashBoardView} />
