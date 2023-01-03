@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, Platform, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Platform, ScrollView } from 'react-native';
 import { Image, Input, ListItem, Avatar, Icon } from 'react-native-elements';
-import { useFonts } from 'expo-font';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -13,11 +12,6 @@ export default function DashBoardView({ navigation, route }) {
         { 'nome': 'Loja 4', 'categoria': 'Restaurante', 'tempo_entrega': '20-30', 'taxa_entrega': 5.99 },
         { 'nome': 'Loja 5', 'categoria': 'Restaurante', 'tempo_entrega': '10-15', 'taxa_entrega': 5.89 },
     ];
-    const [fontsLoaded] = useFonts({
-        'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
-        'Sarabun-Regular': require('../../assets/fonts/Sarabun-Regular.ttf'),
-    });
-    if (!fontsLoaded) return null;
 
     const StoreItem = (props) => {
         return (
@@ -26,8 +20,8 @@ export default function DashBoardView({ navigation, route }) {
                     size="medium"
                     rounded
                     title="LJ"
-                    titleStyle={{ color: '#fff', fontFamily: 'Poppins-Regular' }}
-                    containerStyle={{ backgroundColor: '#B55C5C' }}
+                    titleStyle={{ color: '#fff', fontFamily: 'Poppins_400Regular' }}
+                    containerStyle={{ backgroundColor: 'rgba(181, 92, 92, 0.5)' }}
                 />
                 <ListItem.Content>
                     <ListItem.Title style={styles.listItemText}>{props.nome}</ListItem.Title>
@@ -49,7 +43,7 @@ export default function DashBoardView({ navigation, route }) {
     return (
         <View style={{ flex: 1 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={{ flex: 0.3, flexDirection: 'row', marginTop: Platform.OS === 'android' ? 20 : 0, justifyContent: 'space-between' }}>
+                <View style={{ flex: 0.3, flexDirection: 'row', marginTop: Platform.OS === 'android' ? 20 : 0 }}>
                     <Image
                         source={require('../../assets/fourfood_dashboard.png')}
                         style={styles.image}
@@ -65,12 +59,12 @@ export default function DashBoardView({ navigation, route }) {
                         rowTextStyle={styles.dropDowntext}
                         buttonStyle={{ backgroundColor: 'rgba(0,0,0,0.0)' }}
                     />
-                    <Avatar
+                    {/* <Avatar
                         rounded
                         source={require('../../assets/profile_image100x100.png')}
                         containerStyle={{ right: 10, top: 8 }}
                         size='medium'
-                    />
+                    /> */}
                 </View>
                 <View style={{ flex: 0.4 }}>
                     <Input
@@ -81,6 +75,7 @@ export default function DashBoardView({ navigation, route }) {
 
                 </View>
                 <View style={{ flex: 0.3, marginTop: 20 }}>
+                    <Text style={styles.text}>Categorias</Text>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                             <Image
@@ -142,6 +137,21 @@ export default function DashBoardView({ navigation, route }) {
                         ))
                     }
                 </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                    <Image
+                        source={require('../../assets/home_icon.png')}
+                        style={{ width: 55, height: 55 }}
+
+                    />
+                    <Image
+                        source={require('../../assets/lista_icon.png')}
+                        style={{ width: 55, height: 55 }}
+                    />
+                    <Image
+                        source={require('../../assets/profile_image100x100.png')}
+                        style={{ width: 50, height: 50 }}
+                    />
+                </View>
             </ScrollView>
         </View>
 
@@ -150,19 +160,20 @@ export default function DashBoardView({ navigation, route }) {
 
 const styles = StyleSheet.create({
     listItemText: {
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins_400Regular',
         fontSize: 16,
         color: '#1A1A1A',
     },
     listItemContainer: {
-        backgroundColor: 'rgba(0,0,0,0.0)',
+        backgroundColor: 'rgba(196, 196, 196, 0.31)',
+        marginBottom: 5,
     },
     image: {
         width: 106,
         height: 44,
     },
     dropDowntext: {
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins_400Regular',
         fontSize: 10,
     },
     dropdown: {
@@ -186,16 +197,14 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
     text: {
-        fontFamily: 'Sarabun-Regular',
+        fontFamily: 'Sarabun_700Bold',
         fontSize: 18,
         lineHeight: 26,
-        fontWeight: '700',
-        fontStyle: 'normal',
         textAlign: 'center',
     },
     label: {
         fontWeight: '400',
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins_400Regular',
         fontSize: 16,
         lineHeight: 20,
         color: '#000',

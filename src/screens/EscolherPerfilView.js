@@ -1,7 +1,11 @@
 import { View, StyleSheet, Text } from "react-native";
 import { Image } from "react-native-elements";
+import { save, getValueFor } from "../token/token";
 
 export default function EscolherPerfilView({ navigation, route }) {
+    getValueFor('accountType').then((data) => {
+        console.log(data);
+    })
     const AccountType = {
         Cliente: 'cliente',
         Empresa: 'empresa'
