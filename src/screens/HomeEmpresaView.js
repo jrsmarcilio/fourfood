@@ -114,7 +114,7 @@ export default function HomeEmpresaView({ navigation, route }) {
                         titleStyle={styles.buttonTitle}
                         buttonStyle={[styles.button, { height: 40, marginRight: 0, width: 240 }]}
                         onPress={() => alert('navegar para tela de cadastro de produto')}
-                        
+
                     />
                 </View>
             </View>
@@ -134,22 +134,23 @@ export default function HomeEmpresaView({ navigation, route }) {
                 </ScrollView>
                 <Divider orientation="horizontal" color="grey" />
             </View>
-            
-            <View style={{ flex: 0.075, flexDirection: 'row', justifyContent: 'space-evenly' }}>{/* View para footer menu */}
+
+            <View style={{ flex: 0.075, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>{/* View para footer menu */}
                 <Image
                     source={require('../../assets/home_icon.png')}
-                    style={{ width: 55}}
+                    style={{ width: 45, height: 45 }}
 
                 />
                 <Image
                     source={require('../../assets/lista_icon.png')}
-                    style={{ width: 55}}
+                    style={{ width: 45, height: 45 }}
                 />
                 <Image
-                    source={require('../../assets/add_product_icon.png')}
-                    style={{ width: 55}}
+                    source={require('../../assets/profile_image100x100.png')}
+                    style={{ width: 45, height: 45 }}
+                    onPress={() => navigation.navigate('MenuView')}
                 />
-                
+
             </View>
 
         </View>

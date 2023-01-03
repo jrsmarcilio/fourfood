@@ -1,14 +1,19 @@
-import { StyleSheet, Text, View, Platform} from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import { Switch, Icon, Button } from 'react-native-elements';
 import { useState } from 'react';
 import { setItem, getItem } from '../storage/Storage';
 
 export default function MenuView({ navigation, route }) {
     const [switchValue, setSwitchValue] = useState(true);
-    const [painelAtivo, setPainelAtivo] = useState('cliente');
-    //setItem('profile', 'cliente');
+    const [painelAtivo, setPainelAtivo] = useState('');
     getItem('profile').then((data) => {
-        if (!data) console.log('nao tem dados');
+        if (data && data === 'cliente') {
+            setPainelAtivo(data);
+            setSwitchValue(true);
+        } else {
+            setPainelAtivo(data);
+            setSwitchValue(false);
+        }
     })
 
     return (
@@ -18,6 +23,12 @@ export default function MenuView({ navigation, route }) {
                     name='chevron-left'
                     type='font-awesome'
                     size={20}
+                    onPress={() => {
+                        getItem('profile').then((data) => {
+                            if (data === 'cliente') navigation.goBack();
+                            else navigation.navigate('HomeEmpresaView');
+                        })
+                    }}
                 />
             </View>
             <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
@@ -56,6 +67,7 @@ export default function MenuView({ navigation, route }) {
                         />
                     }
                     title=" Cadastrar produto"
+                    onPress={() => navigation.navigate('ProdutoView')}
                 />
                 <Button
                     buttonStyle={styles.button}
@@ -70,14 +82,24 @@ export default function MenuView({ navigation, route }) {
                     }
                     iconRight={true}
                     title="Logout "
+                    onPress={() => navigation.navigate('LoginView')}
                 />
-                <Text style={styles.text}>Painel padrão: <Text>{painelAtivo}</Text></Text>
+                <Text style={styles.text}>Painel padrão: {painelAtivo}</Text>
                 <Switch
                     style={{ alignSelf: 'center' }}
                     value={switchValue}
                     onChange={() => {
-                        painelAtivo === 'cliente' ? setPainelAtivo('empresa') : setPainelAtivo('cliente');
-                        setSwitchValue(!switchValue);
+                        getItem('profile').then((data) => {
+                            if (data === 'cliente') {
+                                setItem('profile', 'empresa');
+                                setSwitchValue(false);
+                                navigation.navigate('HomeEmpresaView');
+                            } else {
+                                setItem('profile', 'cliente');
+                                setSwitchValue(true);
+                                navigation.navigate('DashBoardView');
+                            }
+                        })
                     }}
 
                 />
