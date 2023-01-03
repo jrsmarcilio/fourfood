@@ -1,118 +1,86 @@
-import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Image, Button, Input, Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
-import { useState } from 'react';
-import { FontAwesome } from 'react-native-vector-icons/FontAwesome';
+import { useForm } from 'react-hook-form';
+import { Platform, ScrollView, StyleSheet, Text, View, TextInput } from 'react-native';
+import { Button, Icon, Image, Input } from 'react-native-elements';
+import { TextField } from '../components/TextField';
+import { HeaderTitle } from '../components/HeaderTitle';
+
 
 export default function CadastroEnderecoView() {
-    const [nomeDaRua, setNomeDaRua] = useState('');
-    const [complemento, setComplemento] = useState('');
-    const [numero, setNumero] = useState('');
-    const [cep, setCep] = useState('');
-    const [bairro, setBairro] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
+  const { setValue, handleSubmit } = useForm();
 
-    const [fontsLoaded] = useFonts({
-        'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
-    });
-    if (!fontsLoaded) return null;
+  const userId = 6; // Pegar Id do usuário logado
 
-    return (
-        <View style={{ flex: 1, marginTop: Platform.OS === 'android' ? 30 : 0 }}>
-            <ScrollView>
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginBottom: 10 }}>
-                    <Icon
-                        name='chevron-left'
-                        type='font-awesome'
-                    />
+  const onSubmit = async (data) => {
+    if (!data) {
+      showMessage({ message: 'Preencha os campos corretamente.', type: 'danger' });
+      return;
+    }
 
-                    <Text>Cadastrar endereço</Text>
-                    <Image
-                        source={require('../../assets/fourfood_dashboard.png')}
-                        style={styles.image}
-                    />
+    await api.post(`/enderecocliente/${userId}/endereco`, data)
+      .then((response) => {
+        showMessage({ message: 'Cadastro realizado com sucesso', type: 'success' });
+        const { id: enderecoId, localizacao: descricao } = response.data;
+        navigation.navigate('DashboardView', { enderecoId, descricao });
+      })
+      .catch((error) => {
+        showMessage({ message: 'Existem campos preenchidos incorretos.', type: 'danger' });
+      });
+  }
 
-                </View>
-                <View style={{ flex: 1 }}>
-                    <Input
-                        label='Nome da Rua'
-                        value={nomeDaRua}
-                        onChangeText={nomeDaRua => setNomeDaRua(nomeDaRua)}
-                    />
-                    <Input
-                        label='Complemento'
-                        value={complemento}
-                        onChangeText={complemento => setComplemento(complemento)}
-                    />
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                        <Input
-                            label='Número'
-                            value={numero}
-                            onChangeText={numero => setNumero(numero)}
-                            containerStyle={{ width: 150 }}
-                        />
-                        <Input
-                            label='CEP'
-                            value={cep}
-                            onChangeText={complemento => setCep(cep)}
-                            containerStyle={{ width: 210 }}
-                        />
-                    </View>
+  const [fontsLoaded] = useFonts({
+    'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
+  });
+  if (!fontsLoaded) return null;
 
-                    <Input
-                        label='Bairro'
-                        value={bairro}
+  return (
+    <View style={{ flex: 1, marginTop: Platform.OS === 'android' ? 30 : 0 }}>
+      <ScrollView>
+        <HeaderTitle title='Cadastrar endereço' componentName='DashBoardView' />
 
+        <View style={{ flex: 1 }}>
+          <TextField label='CEP' onChangeText={text => setValue(text)} />
+          <TextField label='Número' onChangeText={text => setValue(text)} />
+          <TextField label='Rua' onChangeText={text => setValue(text)} />
+          <TextField label='Complemento' onChangeText={text => setValue(text)} />
+          <TextField label='Bairro' onChangeText={text => setValue(text)} />
+          <TextField label='Cidade' onChangeText={text => setValue(text)} />
+          <TextField label='Estado' onChangeText={text => setValue(text)} />
 
-                        onChangeText={bairro => setBairro(bairro)}
-                    />
-                    <Input
-                        label='Cidade'
-                        value={cidade}
+          <Button title="Cadastrar" buttonStyle={styles.button} onPress={handleSubmit(onSubmit)} />
+        </View>
+        <View style={{ flex: 1 }}>
 
-
-                        onChangeText={cidade => setCidade(cidade)}
-                    />
-                    <Input
-                        label='Estado'
-                        value={estado}
-
-
-                        onChangeText={estado => setEstado(estado)}
-                    />
-                    <Button
-                        title="Cadastrar"
-                        buttonStyle={styles.button}
-                        onPress={() => navigation.navigate('DashboardView')}
-                    />
-
-                </View>
-                <View style={{ flex: 1 }}>
-
-                </View>
-            </ScrollView>
-        </View >
+        </View>
+      </ScrollView>
+    </View >
 
 
 
 
-    )
+  )
 }
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#B84D4D',
-        minWidth: 200,
-        alignSelf: 'center',
-        fontFamily: 'Poppins-Regular',
-        marginTop: 30
+  button: {
+    backgroundColor: '#B84D4D',
+    minWidth: 200,
+    alignSelf: 'center',
+    fontFamily: 'Poppins-Regular',
+    marginTop: 30
 
-    },
-    image: {
-        width: 106,
-        height: 44,
-    }
+  },
+  image: {
+    width: 106,
+    height: 44,
+  },
+  input: {
+    height: 40,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    paddingHorizontal: 8,
+    borderRadius: 8
+  },
 })
 
 

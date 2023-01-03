@@ -1,17 +1,17 @@
+import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { Roboto_500Medium } from '@expo-google-fonts/roboto';
+import { Sarabun_700Bold, useFonts } from '@expo-google-fonts/sarabun';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import FlashMessage from 'react-native-flash-message';
+
+import CadastroClienteView from './src/screens/CadastroClienteView';
+import CadastroEmpresaView from './src/screens/CadastroEmpresaView';
 import CadastroEnderecoView from './src/screens/CadastroEnderecoView';
 import DashBoardView from './src/screens/DashboardView';
-import { CadastroClienteView } from './src/screens/CadastroClienteView';
-import { CadastroEmpresaView } from './src/screens/CadastroEmpresaView';
-import { Poppins_400Regular } from '@expo-google-fonts/poppins';
-import { Roboto_500Medium } from '@expo-google-fonts/roboto';
-import { Sarabun_700Bold, useFonts } from '@expo-google-fonts/sarabun';
-import { HomeEmpresaView } from './src/screens/HomeEmpresaView';
-
+import HomeEmpresaView from './src/screens/HomeEmpresaView';
 import ProdutoView from './src/screens/CadastroProdutosView';
 import EscolherPerfilView from './src/screens/EscolherPerfilView';
 import LoginView from './src/screens/LoginView';
