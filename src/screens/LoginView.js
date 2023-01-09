@@ -7,11 +7,13 @@ import { api } from '../services/api';
 
 import { TextField } from '../components/TextField';
 import { save } from '../token/token';
-import { TextFieldMask } from '../components/TextFieldMask';
+import { getItem, setItem } from '../storage/Storage';
 
 export default function LoginView({ navigation, route }) {
   const { setValue, handleSubmit } = useForm();
-  const { accountType } = route.params;
+  getItem('profile').then((data) => {
+    if (!data) setItem('profile', 'cliente');
+  })
 
   const onSubmit = async (data) => {
     if (!data || data.username === '' || data.password === '') {
@@ -25,6 +27,7 @@ export default function LoginView({ navigation, route }) {
         changeRedirect('dashboard');
       })
       .catch((error) => {
+        console.log(error);
         showMessage({
           message: 'Login ou senha incorretos',
           type: 'danger'
@@ -33,14 +36,16 @@ export default function LoginView({ navigation, route }) {
   }
 
   const changeRedirect = (view) => {
-    if (accountType === 'cliente') {
-      navigation.navigate(view == 'register' ? 'CadastroClienteView' : 'DashBoardView');
-      return;
-    }
-    // Se passou AccountType === Empresa
-    navigation.navigate(view == 'register' ? 'CadastroEmpresaView' : 'HomeEmpresaView');
-    // Condicionais ternários são legais, mas não abusem
-    // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+    getItem('profile').then((accountType) => {
+      if (accountType === 'cliente') {
+        navigation.navigate(view == 'register' ? 'CadastroClienteView' : 'DashBoardView');
+        return;
+      }
+      // Se passou AccountType === Empresa
+      navigation.navigate(view == 'register' ? 'CadastroEmpresaView' : 'HomeEmpresaView');
+      // Condicionais ternários são legais, mas não abusem
+      // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+    })
   }
 
   return (

@@ -12,6 +12,7 @@ import CadastroEmpresaView from './src/screens/CadastroEmpresaView';
 import CadastroEnderecoView from './src/screens/CadastroEnderecoView';
 import DashBoardView from './src/screens/DashboardView';
 import HomeEmpresaView from './src/screens/HomeEmpresaView';
+import MenuView from './src/screens/MenuView';
 import ProdutoView from './src/screens/CadastroProdutosView';
 import EscolherPerfilView from './src/screens/EscolherPerfilView';
 import LoginView from './src/screens/LoginView';
@@ -38,9 +39,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='LoginView' component={LoginView} />
+        <Stack.Screen name='MenuView' component={MenuView} />
+        {/* <Stack.Screen name='EscolherPerfilView' component={EscolherPerfilView} /> */}
+        {/* <Stack.Screen name='LoginView' component={LoginView} /> */}
         <Stack.Screen name='ProdutoView' component={ProdutoView} />
         <Stack.Screen name='EscolherPerfilView' component={EscolherPerfilView} />
-        <Stack.Screen name='LoginView' component={LoginView} />
+        {/* <Stack.Screen name='LoginView' component={LoginView} /> */}
         <Stack.Screen name='CadastroEnderecoView' component={CadastroEnderecoView} />
         <Stack.Screen name='CadastroClienteView' component={CadastroClienteView} />
         <Stack.Screen name='CadastroEmpresaView' component={CadastroEmpresaView} />

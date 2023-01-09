@@ -150,6 +150,7 @@ export default function DashBoardView({ navigation, route }) {
                     <Image
                         source={require('../../assets/profile_image100x100.png')}
                         style={{ width: 50, height: 50 }}
+                        onPress={() => navigation.navigate('MenuView')}
                     />
                 </View>
             </ScrollView>
