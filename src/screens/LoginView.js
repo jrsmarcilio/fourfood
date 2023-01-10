@@ -6,6 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import { api } from '../services/api';
 
 import { TextField } from '../components/TextField';
+import { LogoComponent } from '../components/LogoComponent';
 import { save } from '../token/token';
 import { getItem, setItem } from '../storage/Storage';
 
@@ -16,18 +17,20 @@ export default function LoginView({ navigation, route }) {
   })
 
   const onSubmit = async (data) => {
+    console.log("🚀 ~ file: LoginView.js:20 ~ data", data)
     if (!data || data.username === '' || data.password === '') {
       showMessage({ message: 'Campo login e senha são obrigatórios', type: 'danger' });
       return;
     }
 
-    api.post('/login/signin', data)
+    await api.post('/login/signin', data)
       .then((response) => {
+        console.log("🚀 ~ file: LoginView.js:28 ~ response", response)
         save('token', response.data.token);
         changeRedirect('dashboard');
       })
       .catch((error) => {
-        console.log(error);
+        console.log("🚀 ~ file: LoginView.js:33 ~ error", error)
         showMessage({
           message: 'Login ou senha incorretos',
           type: 'danger'
@@ -41,20 +44,14 @@ export default function LoginView({ navigation, route }) {
         navigation.navigate(view == 'register' ? 'CadastroClienteView' : 'DashBoardView');
         return;
       }
-      // Se passou AccountType === Empresa
       navigation.navigate(view == 'register' ? 'CadastroEmpresaView' : 'HomeEmpresaView');
-      // Condicionais ternários são legais, mas não abusem
-      // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
     })
   }
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 20 }}>
+    <View style={styles.container}>
 
-      <Image
-        source={require("../../assets/logo.png")}
-        style={styles.image}
-      />
+      <LogoComponent size={250} />
 
       <TextField label='E-mail' onChangeText={text => setValue('username', text)} />
       <TextField label='Senha' onChangeText={text => setValue('password', text)} secureTextEntry={true} />
@@ -80,11 +77,20 @@ export default function LoginView({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    minHeight: 140,
-    paddingBottom: 200
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    height: '100%',
+    textAlign: 'center',
+    flex: 1,
+    paddingHorizontal: 20
   },
-
+  image: {
+    height: 300,
+    width: 'auto',
+    resizeMode: "center",
+  },
   button: {
     backgroundColor: '#B84D4D',
     minWidth: 200,

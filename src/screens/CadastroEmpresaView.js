@@ -5,6 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import { TextField } from '../components/TextField';
 import { TextFieldMask } from '../components/TextFieldMask';
+import { LogoComponent } from '../components/LogoComponent';
 import { api } from '../services/api';
 
 export default function CadastroEmpresaView({ navigation, route }) {
@@ -40,11 +41,8 @@ export default function CadastroEmpresaView({ navigation, route }) {
   return (
     <View style={{ flex: 1, paddingHorizontal: 20 }}>
       <ScrollView>
-        <Image
-          source={require("../../assets/fourfood.png")}
-          style={styles.image}
-        />
-        <Text style={styles.text}>CADASTRE UMA EMPRESA</Text>
+        <LogoComponent size={200} />
+        <Text style={styles.text}>Cadastro de Loja</Text>
         <View style={{ flex: 1 }}>
           <TextField required label='Nome Fantasia' onChangeText={text => setValue('nomeFantasia', text)} />
           <TextField required label='Nome Empresarial' onChangeText={text => setValue('nomeEmpresarial', text)} />

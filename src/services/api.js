@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://fourfood-api.herokuapp.com'
+  baseURL: 'http://0.0.0.0:8080/api'
 });
 
 const brasilApi = axios.create({
