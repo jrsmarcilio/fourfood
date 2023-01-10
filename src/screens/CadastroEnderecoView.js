@@ -1,14 +1,15 @@
 import { useFonts } from 'expo-font';
 import { useForm } from 'react-hook-form';
-import { Platform, ScrollView, StyleSheet, Text, View, TextInput } from 'react-native';
-import { Button, Icon, Image, Input } from 'react-native-elements';
-import { TextField } from '../components/TextField';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import { showMessage } from 'react-native-flash-message';
 import { HeaderTitle } from '../components/HeaderTitle';
-
+import { TextField } from '../components/TextField';
+import { TextFieldMask } from '../components/TextFieldMask';
+import { api, brasilApi } from '../services/api';
 
 export default function CadastroEnderecoView() {
-  const { setValue, handleSubmit } = useForm();
-
+  const { setValue, getValues, handleSubmit, reset } = useForm();
   const userId = 6; // Pegar Id do usuário logado
 
   const onSubmit = async (data) => {
@@ -28,6 +29,28 @@ export default function CadastroEnderecoView() {
       });
   }
 
+  const handleChangeCep = async () => {
+    console.log(getValues)
+    if (getValues('cep').length === 9) {
+      await brasilApi.get(`/cep/v2/${getValues('cep').split('-').join('')}`)
+        .then((response) => {
+          const { state, city, neighborhood, street } = response.data;
+          const data = {
+            rua: street,
+            bairro: neighborhood,
+            cidade: city,
+            estado: state,
+          }
+          reset(data);
+        })
+        .catch((error) => {
+          showMessage({ message: 'CEP inválido.', type: 'danger' });
+        });
+    } else {
+      showMessage({ message: 'Preencha o CEP corretamente.', type: 'danger' });
+    }
+  }
+
   const [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../../assets/fonts/Poppins-Regular.ttf'),
   });
@@ -39,13 +62,17 @@ export default function CadastroEnderecoView() {
         <HeaderTitle title='Cadastrar endereço' componentName='DashBoardView' />
 
         <View style={{ flex: 1 }}>
-          <TextField label='CEP' onChangeText={text => setValue(text)} />
-          <TextField label='Número' onChangeText={text => setValue(text)} />
-          <TextField label='Rua' onChangeText={text => setValue(text)} />
-          <TextField label='Complemento' onChangeText={text => setValue(text)} />
-          <TextField label='Bairro' onChangeText={text => setValue(text)} />
-          <TextField label='Cidade' onChangeText={text => setValue(text)} />
-          <TextField label='Estado' onChangeText={text => setValue(text)} />
+
+          <TextFieldMask mask="99999-999" defaultValue={getValues('cep')} label='CEP' onChangeText={text => setValue('cep', text)} />
+          <View style={{ marginTop: 12 }}>
+            <Button title="Procurar endereço" onPress={handleChangeCep} />
+          </View>
+          <TextField defaultValue={getValues('numero')} label='Número' onChangeText={text => setValue('cep', text)} />
+          <TextField defaultValue={getValues('rua')} label='Rua' onChangeText={text => setValue('rua', text)} />
+          <TextField defaultValue={getValues('complemento')} label='Complemento' onChangeText={text => setValue('complemento', text)} />
+          <TextField defaultValue={getValues('bairro')} label='Bairro' onChangeText={text => setValue('bairro', text)} />
+          <TextField defaultValue={getValues('cidade')} label='Cidade' onChangeText={text => setValue('cidade', text)} />
+          <TextField defaultValue={getValues('estado')} label='Estado' onChangeText={text => setValue('estado', text)} />
 
           <Button title="Cadastrar" buttonStyle={styles.button} onPress={handleSubmit(onSubmit)} />
         </View>
@@ -54,10 +81,6 @@ export default function CadastroEnderecoView() {
         </View>
       </ScrollView>
     </View >
-
-
-
-
   )
 }
 
@@ -81,9 +104,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     borderRadius: 8
   },
-})
-
-
-
-
-
+});
