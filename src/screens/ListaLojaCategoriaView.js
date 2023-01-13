@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Platform, ScrollView } from 'react-native';
-import { Image, Input, ListItem, Avatar, Icon, Header } from 'react-native-elements';
-import SelectDropdown from 'react-native-select-dropdown';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { ListItem, Avatar, Icon, Header } from 'react-native-elements';
 import { useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import { getValueFor } from '../token/token';
 import BottonNavigation from '../components/BottonNavigation';
 
-export default function DashBoardView({ navigation, route }) {
+export default function ListaLojaCategoriaView({ navigation, route }) {
+    const { id, categoria } = route.params;
     const [lojas, setLojas] = useState([]);
     const [token, setToken] = useState('');
     const isFocused = useIsFocused();
-    const countries = ["Rua Campos do Jordão, 162", "Rua Aldeia Velha, 200", "Av. Norte, 2450", "Av. Recife, SN"];
 
     useEffect(() => {
         async function getLojas() {
@@ -23,7 +21,7 @@ export default function DashBoardView({ navigation, route }) {
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
-            const result = await axios.get('https://fourfood-api.herokuapp.com/api/empresa', config)
+            const result = await axios.get(`https://fourfood-api.herokuapp.com/api/empresa/porcategoria/${id}`, config)
                 .then((data) => {
                     setLojas(data.data);
                 })
@@ -69,18 +67,12 @@ export default function DashBoardView({ navigation, route }) {
                 <View style={{ flex: 0.3, flexDirection: 'row' }}>
                     <Header
                         backgroundColor={'transparent'}
-                        leftComponent={<Image source={require('../../assets/fourfood_dashboard.png')} style={styles.image} />}
-                        centerComponent={<SelectDropdown
-                            data={countries}
-                            defaultButtonText='Adicionar endereço'
-                            dropdownIconPosition='right'
-                            renderDropdownIcon={isOpened => {
-                                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                            }}
-                            buttonTextStyle={styles.dropDowntext}
-                            rowTextStyle={styles.dropDowntext}
-                            buttonStyle={{ backgroundColor: 'transparent' }}
-                        />}
+                        leftComponent={{
+                            icon: 'chevron-left', color: '#000', iconStyle: { color: '#000' }, size: 35, onPress: () => {
+                                navigation.goBack();
+                            }
+                        }}
+                        centerComponent={<Text style={styles.text}>{categoria}</Text>}
                     />
                     {/* <Image
                         source={require('../../assets/fourfood_dashboard.png')}
@@ -106,45 +98,7 @@ export default function DashBoardView({ navigation, route }) {
                     {/* <Text style={styles.text}>Bem vindo, user!</Text> */}
 
                 </View>
-                <View style={{ flex: 0.3, marginTop: 20 }}>
-                    <Text style={styles.text}>Categorias</Text>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
-                            <Avatar
-                                size={'large'}
-                                rounded
-                                source={require('../../assets/burger.png')}
-                                containerStyle={styles.carouselImage}
-                            />
-                            <Avatar
-                                size={'large'}
-                                rounded
-                                source={require('../../assets/pizzareal2.png')}
-                                containerStyle={styles.carouselImage}
-                            />
-                            <Avatar
-                                size={'large'}
-                                rounded
-                                source={require('../../assets/saladareal.png')}
-                                containerStyle={styles.carouselImage}
-                            />
-                            <Avatar
-                                size={'large'}
-                                rounded
-                                source={require('../../assets/bebidareal.png')}
-                                containerStyle={styles.carouselImage}
-                            />
-                            <Avatar
-                                size={'large'}
-                                rounded
-                                source={require('../../assets/padariareal.png')}
-                                containerStyle={styles.carouselImage}
-                            />
-                        </View>
-                    </ScrollView>
-                </View>
-                <View style={{ flex: 1, marginTop: 20 }}>
-                    <Text style={styles.text}>Lojas disponíveis</Text>
+                <View style={{ flex: 1 }}>
                     {
                         lojas.map((store, i) => (
                             <StoreItem nome={store.nomeFantasia} categoria={store.categoria} tempo_entrega={store.tempo_entrega} taxa_entrega={store.taxa_entrega} key={i} id={store.id} />
@@ -169,51 +123,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(196, 196, 196, 0.31)',
         marginBottom: 5,
     },
-    image: {
-        width: 106,
-        height: 44,
-    },
-    dropDowntext: {
-        fontFamily: 'Poppins_400Regular',
-        fontSize: 10,
-    },
-    dropdown: {
-        width: 165,
-        borderWidth: 0,
-        backgroundColor: 'rgba(0,0,0,0.0)',
-    },
-    container: {
-        width: 165,
-        backgroundColor: 'rgba(0,0,0,0.0)',
-    },
-    button: {
-        backgroundColor: '#B84D4D',
-        minWidth: 200,
-        alignSelf: 'center',
-    },
-    carouselImage: {
-        marginLeft: 10,
-        marginRight: 10,
-    },
     text: {
         fontFamily: 'Sarabun_700Bold',
-        fontSize: 18,
+        fontSize: 20,
         lineHeight: 26,
         textAlign: 'center',
     },
-    label: {
-        fontWeight: '400',
-        fontFamily: 'Poppins_400Regular',
-        fontSize: 16,
-        lineHeight: 20,
-        color: '#000',
-        marginLeft: 8,
-        marginRight: 8,
-    },
-    input: {
-        borderBottomWidth: 1,
-        marginLeft: 8,
-        marginRight: 8,
-        marginBottom: 20,
-    }
 });

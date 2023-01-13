@@ -16,6 +16,9 @@ import MenuView from './src/screens/MenuView';
 import ProdutoView from './src/screens/CadastroProdutosView';
 import EscolherPerfilView from './src/screens/EscolherPerfilView';
 import LoginView from './src/screens/LoginView';
+import DisplayLojaView from './src/screens/DisplayLojaView';
+import CategoriasView from './src/screens/CategoriasView';
+import ListaLojaCategoriaView from './src/screens/ListaLojaCategoriaView';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +54,9 @@ export default function App() {
         <Stack.Screen name='CadastroEmpresaView' component={CadastroEmpresaView} />
         <Stack.Screen name='DashBoardView' component={DashBoardView} />
         <Stack.Screen name='HomeEmpresaView' component={HomeEmpresaView} />
+        <Stack.Screen name='DisplayLojaView' component={DisplayLojaView} />
+        <Stack.Screen name='CategoriasView' component={CategoriasView} />
+        <Stack.Screen name='ListaLojaCategoriaView' component={ListaLojaCategoriaView} />
       </Stack.Navigator>
       <FlashMessage position={'bottom'} />
     </NavigationContainer>

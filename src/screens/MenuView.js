@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Platform } from 'react-native';
-import { Switch, Icon, Button } from 'react-native-elements';
+import { Switch, Icon, Button, Header } from 'react-native-elements';
 import { useState } from 'react';
 import { setItem, getItem } from '../storage/Storage';
 
@@ -18,16 +18,16 @@ export default function MenuView({ navigation, route }) {
 
     return (
         <View style={{ flex: 1 }}>
-            <View style={styles.header}>
-                <Icon
-                    name='chevron-left'
-                    type='font-awesome'
-                    size={20}
-                    onPress={() => {
-                        getItem('profile').then((data) => {
-                            if (data === 'cliente') navigation.goBack();
-                            else navigation.navigate('HomeEmpresaView');
-                        })
+            <View>
+                <Header
+                    backgroundColor={'transparent'}
+                    leftComponent={{
+                        icon: 'chevron-left', color: '#000', iconStyle: { color: '#000' }, size: 35, onPress: () => {
+                            getItem('profile').then((data) => {
+                                if (data === 'cliente') navigation.goBack();
+                                else navigation.navigate('HomeEmpresaView');
+                            })
+                        }
                     }}
                 />
             </View>
