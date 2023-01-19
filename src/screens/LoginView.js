@@ -15,6 +15,13 @@ export default function LoginView({ navigation, route }) {
     if (!data) setItem('profile', 'cliente');
   })
 
+  getItem('cliente').then((data) => {
+    if (data) {
+      const res = JSON.parse(data);
+      onSubmit(res);
+    }
+  })
+
   const onSubmit = async (data) => {
     if (!data || data.username === '' || data.password === '') {
       showMessage({ message: 'Campo login e senha são obrigatórios', type: 'danger' });
@@ -24,6 +31,7 @@ export default function LoginView({ navigation, route }) {
     api.post('/login/signin', data)
       .then((response) => {
         save('token', response.data.token);
+        setItem('cliente', JSON.stringify(data));
         changeRedirect('dashboard');
       })
       .catch((error) => {
@@ -57,7 +65,7 @@ export default function LoginView({ navigation, route }) {
       />
 
       <TextField label='E-mail' onChangeText={text => setValue('username', text)} />
-      <TextField label='Senha' onChangeText={text => setValue('password', text)} secureTextEntry={true} />
+      <TextField label='Senha' onChangeText={text => setValue('password', text)} secureTextEntry={true}/>
 
       <Button
         title="Entrar"

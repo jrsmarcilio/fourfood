@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Platform, ScrollView } from 'react-native';
-import { Icon, Image, ListItem, Avatar, Header } from 'react-native-elements';
+import { Icon, Image, ListItem, Avatar, Header, Button } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import { getValueFor } from '../token/token';
@@ -10,7 +10,52 @@ export default function DisplayLojaView({ navigation, route }) {
     const [token, setToken] = useState('');
     const [loja, setLoja] = useState('');
     const [produtos, setProdutos] = useState([]);
+    const [valorTotal, setValorTotal] = useState(0);
     const isFocused = useIsFocused();
+    const [list, setList] = useState([
+        {
+            produto: 'Item 01',
+            img_url: 'https://i.ibb.co/SBCQVkZ/pizza600x607.png',
+            valor: 20,
+            quantidade: 0
+        },
+        {
+            produto: 'Item 02',
+            img_url: 'https://i.ibb.co/M90z0WH/pizza600x582.png',
+            valor: 40,
+            quantidade: 0
+        },
+        {
+            produto: 'Item 03',
+            img_url: 'https://i.ibb.co/vkrnTG8/carne600x400.png',
+            valor: 10,
+            quantidade: 0
+        },
+    ]);
+
+    function addQtd(index, opt) {
+        let valor = 0;
+
+        const oldlist = list.map((item, i) => {
+
+            if (i === index) {
+                if (opt == 'del' && item.quantidade == 0) {
+                    item.quantidade = opt === 'add' ? item.quantidade : item.quantidade;
+                } else {
+                    item.quantidade = opt === 'add' ? item.quantidade + 1 : item.quantidade - 1;
+                }
+
+
+            }
+            valor += item.valor * item.quantidade;
+            return item;
+        })
+
+        setValorTotal(valor);
+        setList(oldlist);
+
+    }
+
 
     useEffect(() => {
         getValueFor('token').then((data) => {
@@ -38,8 +83,8 @@ export default function DisplayLojaView({ navigation, route }) {
                     console.log(error);
                 })
         }
-        getLoja();
-        getProdutos();
+        //getLoja();
+        //getProdutos();
     }, [isFocused])
 
     const ItemLoja = (props) => {
@@ -96,29 +141,77 @@ export default function DisplayLojaView({ navigation, route }) {
                     </View>
                 </View>
                 <View>
-                    {
+                    {/* {
                         produtos.map((produto, i) => (
                             <ItemLoja titulo={produto.titulo} tempoEntrega={produto.tempoEntrega} valorUnitario={produto.valorUnitario} img_url={produto.codigo} id={produto.id} key={i} />
                         ))
+                    } */}
+                    {
+                        list.map((l, i) => (
+                            <ListItem key={i} bottomDivider>
+                                <Avatar source={{ uri: l.img_url }} rounded />
+                                <ListItem.Content>
+                                    <ListItem.Title>{l.produto}</ListItem.Title>
+                                    <ListItem.Subtitle>R$ {l.valor.toFixed(2)}</ListItem.Subtitle>
+                                    <View style={styles.viewBtn}>
+                                        <Button
+                                            buttonStyle={styles.buttonStyle}
+                                            titleStyle={styles.text}
+                                            title={'-'}
+                                            onPress={() => addQtd(i, 'del')}
+                                        />
+                                        <Text style={styles.text}>{l.quantidade}</Text>
+                                        <Button
+                                            buttonStyle={styles.buttonStyle}
+                                            titleStyle={styles.text}
+                                            title={'+'}
+                                            onPress={() => addQtd(i, 'add')}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+                        ))
+
                     }
                 </View>
+                <View style={{ marginLeft: 10, marginRight: 10 }}>
+                    <Text style={styles.totalText}>TOTAL R$ {valorTotal.toFixed(2)}</Text>
+                    <Button
+                        title={'Continuar'}
+                        buttonStyle={styles.buttonStyle}
+                    />
+                </View>
             </ScrollView>
+
         </View>
 
     );
 }
 
 const styles = StyleSheet.create({
+    totalText: {
+        textAlign: 'right',
+        fontFamily: 'Poppins_400Regular',
+        fontSize: 18,
+    },
+    viewBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'absolute',
+        right: 0,
+        padding: 8,
+    },
+    buttonStyle: {
+        backgroundColor: '#B84D4D'
+    },
     image: {
         width: 106,
         height: 44,
     },
     text: {
-        fontFamily: 'Sarabun_700Bold',
-        fontSize: 20,
-        lineHeight: 26,
-        fontStyle: 'normal',
+        fontFamily: 'Poppins_400Regular',
         textAlign: 'center',
+        width: 25,
     },
     listItemText: {
         fontFamily: 'Poppins_400Regular',
