@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View, Platform, ScrollView } from 'react-native';
-import { Icon, Image, ListItem, Avatar, Header, Button } from 'react-native-elements';
+import { Icon, Image, ListItem, Avatar, Header, Button, BottomSheet, Overlay } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import { getValueFor } from '../token/token';
+import moment from 'moment';
 import axios from 'axios';
 
 export default function DisplayLojaView({ navigation, route }) {
@@ -11,6 +12,7 @@ export default function DisplayLojaView({ navigation, route }) {
     const [loja, setLoja] = useState('');
     const [produtos, setProdutos] = useState([]);
     const [valorTotal, setValorTotal] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
     const isFocused = useIsFocused();
     const [list, setList] = useState([
         {
@@ -117,6 +119,76 @@ export default function DisplayLojaView({ navigation, route }) {
         )
     }
 
+    const OverlayComponent = (props) => {
+        const dias = [
+            'DOM',
+            'SEG',
+            'TER',
+            'QUA',
+            'QUI',
+            'SEX',
+            'SAB',
+        ]
+
+        const date = new Date();
+        const toggleOverlay = () => {
+            setIsVisible(!isVisible);
+        };
+
+        return (
+            <View>
+                <Overlay isVisible={isVisible} onBackdropPress={toggleOverlay} overlayStyle={styles.overlayStyle}>
+                    <Text style={styles.confEntregaTxt}>Confirme a entrega</Text>
+                    <ListItem bottomDivider underlayColor={'#d9dcde'} containerStyle={styles.listItemContainer}>
+                        <View style={{}}>
+                            <Text style={styles.textData}><Text style={{ color: '#B84D4D' }}>{`${dias[date.getDay()]}`}</Text> {`\n${date.getDate()}`}</Text>
+                        </View>
+                        <ListItem.Content>
+                            <ListItem.Title style={styles.titleText}>Entrega hoje</ListItem.Title>
+                            <ListItem.Subtitle style={styles.subtTitleText}>Hoje: 37-47 min</ListItem.Subtitle>
+                        </ListItem.Content>
+                    </ListItem>
+                    <ListItem bottomDivider underlayColor={'#d9dcde'} containerStyle={styles.listItemContainer}>
+                        <View style={{}}>
+                            <Image
+                                source={require('../../assets/map_icon60x60.png')}
+                                style={{ width: 75, height: 75 }}
+                            />
+                        </View>
+                        <ListItem.Content>
+                            <ListItem.Title style={styles.titleText}>Rua Padre Cromácio Leão, 76A</ListItem.Title>
+                            <ListItem.Subtitle style={styles.subtTitleText}>Primeiro Andar</ListItem.Subtitle>
+                        </ListItem.Content>
+                    </ListItem>
+                    <ListItem bottomDivider underlayColor={'#d9dcde'} containerStyle={styles.listItemContainer}>
+                        <View style={{}}>
+                            <Image
+                                source={require('../../assets/master.png')}
+                                style={{ width: 75, height: 47 }}
+                            />
+                        </View>
+                        <ListItem.Content>
+                            <ListItem.Title style={styles.titleText}>Pagamento pelo app</ListItem.Title>
+                            <ListItem.Subtitle style={styles.subtTitleText}>Mastercard ****0000</ListItem.Subtitle>
+                        </ListItem.Content>
+                    </ListItem>
+                    <Button
+                        title={'Confirmar e fazer pedido'}
+                        buttonStyle={styles.buttonStyle}
+                        onPress={() => alert('implementar ação')}
+                    />
+                    <Button
+                        title={'Alterar dados'}
+                        titleStyle={{ color: '#B84D4D' }}
+                        buttonStyle={{ backgroundColor: '#fff' }}
+                        containerStyle={{ marginTop: 10 }}
+                        onPress={() => alert('implementar ação')}
+                    />
+                </Overlay>
+            </View>
+        );
+    }
+
     return (
         <View style={{ flex: 1 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -179,10 +251,14 @@ export default function DisplayLojaView({ navigation, route }) {
                     <Button
                         title={'Continuar'}
                         buttonStyle={styles.buttonStyle}
+                        disabled={valorTotal === 0 ? true : false}
+                        onPress={() => {
+                            setIsVisible(!isVisible);
+                        }}
                     />
                 </View>
             </ScrollView>
-
+            <OverlayComponent />
         </View>
 
     );
@@ -213,13 +289,35 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: 25,
     },
-    listItemText: {
+    titleText: {
         fontFamily: 'Poppins_400Regular',
         fontSize: 16,
-        color: '#1A1A1A',
+        color: '#000',
+    },
+    subtTitleText: {
+        fontFamily: 'Poppins_400Regular',
+        fontSize: 16,
+        color: '#6B6B6B',
     },
     listItemContainer: {
-        backgroundColor: 'rgba(196, 196, 196, 0.31)',
+        backgroundColor: 'transparent',
         marginBottom: 5,
     },
+    overlayStyle: {
+        minWidth: 350,
+        minHeight: 350,
+    },
+    confEntregaTxt: {
+        alignSelf: 'center',
+        fontFamily: 'Sarabun_700Bold',
+        fontSize: 20,
+    },
+    textData: {
+        textAlign: 'center',
+        fontFamily: 'Sarabun_700Bold',
+        borderWidth: 2,
+        borderRadius: 5,
+        padding: 15,
+        borderColor: '#B84D4D',
+    }
 });
