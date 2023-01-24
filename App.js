@@ -19,6 +19,7 @@ import LoginView from './src/screens/LoginView';
 import DisplayLojaView from './src/screens/DisplayLojaView';
 import CategoriasView from './src/screens/CategoriasView';
 import ListaLojaCategoriaView from './src/screens/ListaLojaCategoriaView';
+import PedidoFinalizadoView from './src/screens/PedidoFinalizadoView';
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +58,7 @@ export default function App() {
         <Stack.Screen name='DisplayLojaView' component={DisplayLojaView} />
         <Stack.Screen name='CategoriasView' component={CategoriasView} />
         <Stack.Screen name='ListaLojaCategoriaView' component={ListaLojaCategoriaView} />
+        <Stack.Screen name='PedidoFinalizadoView' component={PedidoFinalizadoView} />
       </Stack.Navigator>
       <FlashMessage position={'bottom'} />
     </NavigationContainer>
