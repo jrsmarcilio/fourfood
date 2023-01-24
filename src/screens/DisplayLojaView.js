@@ -175,14 +175,16 @@ export default function DisplayLojaView({ navigation, route }) {
                     <Button
                         title={'Confirmar e fazer pedido'}
                         buttonStyle={styles.buttonStyle}
-                        onPress={() => alert('implementar ação')}
+                        /* onPress={() => navigation.navigate('PedidoFinalizadoView', {
+                            //dados para salvar no banco
+                        })} */
                     />
                     <Button
                         title={'Alterar dados'}
                         titleStyle={{ color: '#B84D4D' }}
                         buttonStyle={{ backgroundColor: '#fff' }}
                         containerStyle={{ marginTop: 10 }}
-                        onPress={() => alert('implementar ação')}
+                        //onPress={() => alert('implementar ação')}
                     />
                 </Overlay>
             </View>
